@@ -20,5 +20,34 @@
 
   <p>{{ post.content|linebreaks }}</p>
 
+  <hr>
+
+    <h2>Comments</h2>
+
+    {% if comments %}
+    <ul>
+        {% for comment in comments %}
+        <li>
+            <strong>{{ comment.author.username }}</strong>
+            <small>• {{ comment.created_at|date:"M d, Y H:i" }}</small>
+            <p>{{ comment.body|linebreaks }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No comments yet.</p>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+    <h3>Add a comment</h3>
+    <form method="post" class="form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Post comment</button>
+    </form>
+    {% else %}
+    <p><a href="{% url 'login' %}">Login</a> to comment.</p>
+    {% endif %}
+
   <p><a href="{% url 'home' %}">← Back to home</a></p>
 {% endblock %}

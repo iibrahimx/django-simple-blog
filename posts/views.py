@@ -1,8 +1,9 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
 from .models import Post
+from .forms import CommentForm
 
 
 # Create your views here.
@@ -16,8 +17,25 @@ def home(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    comments = post.comments.all().order_by("-created_at")
+
+    form = CommentForm()
+
+    if request.method == "POST":
+        if not request.user.is_authenticated:
+            return redirect("login")
+
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            return redirect("post_detail", pk=post.pk)
     context = {
         "post": post,
+        "comments": comments,
+        "form": form,
     }
     return render(request, "posts/detail.html", context)
 

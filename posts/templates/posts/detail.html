@@ -9,6 +9,13 @@
     <small>by {{ post.author.username }} • {{ post.created_at|date:"M d, Y" }}</small>
   </p>
 
+  {% if user.is_authenticated and user == post.author %}
+    <p>
+      <a class="nav-link" href="{% url 'post_edit' post.pk %}">Edit</a>
+      <a class="nav-link" href="{% url 'post_delete' post.pk %}">Delete</a>
+    </p>
+  {% endif %}
+
   <hr>
 
   <p>{{ post.content|linebreaks }}</p>

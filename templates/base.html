@@ -10,7 +10,7 @@
   <body>
     <header class="site-header">
       <div class="container header-inner">
-        <a class="brand" href="/">Simple Blog</a>
+        <a class="nav-link" href="{% url 'signup' %}">Sign up</a>
 
         <nav class="nav">
           {% if user.is_authenticated %}

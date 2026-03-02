@@ -1,0 +1,36 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Simple Blog{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="/">Simple Blog</a>
+
+        <nav class="nav">
+          {% if user.is_authenticated %}
+          <span class="nav-text">Hi, {{ user.username }}</span>
+          <a class="nav-link" href="#">New Post</a>
+          <a class="nav-link" href="#">Logout</a>
+          {% else %}
+          <a class="nav-link" href="#">Login</a>
+          <a class="nav-link" href="#">Sign up</a>
+          {% endif %}
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">{% block content %}{% endblock %}</main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <small>Built with Django</small>
+      </div>
+    </footer>
+  </body>
+</html>

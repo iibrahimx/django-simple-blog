@@ -1,6 +1,11 @@
 from django.shortcuts import render
+from .models import Post
 
 
 # Create your views here.
 def home(request):
-    return render(request, "posts/home.html")
+    posts = Post.objects.all().order_by("-created_at")
+    context = {
+        "posts": posts,
+    }
+    return render(request, "posts/home.html", context)
